@@ -8,8 +8,9 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p "/media/data"
 RUN chown -R www-data:www-data "/media/data"
 
+COPY 05-volume-permission.sh /docker-entrypoint.d/05-volume-permission.sh
 COPY nginx-dav.conf /etc/nginx/sites-enabled/default
 
-VOLUME /media/data
+ENV EXCHANGE_VOLUME_PATH=/media/data
 
-CMD chmod a+x /media/data && nginx -g "daemon off;"
+VOLUME ${EXCHANGE_VOLUME_PATH}
